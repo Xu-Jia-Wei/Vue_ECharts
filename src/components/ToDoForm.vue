@@ -5,33 +5,50 @@
           What needs to be done?
         </label>
       </h2>
-      <input
+      <el-input
         type="text"
         id="new-todo-input"
         name="new-todo"
-        autocomplete="off"
         v-model.lazy.trim="label"
-        class="input__lg" />
-      <button type="submit" class="btn btn__primary btn__lg">Add</button>
+        placeholder="Enter a new to-do"
+        size="large"
+        class="input__lg"/>
+      <el-button type="primary" class="btn__primary btn__lg" size="large" @click="onSubmit">Add</el-button>
     </form>
-</template>
-
-<script>
-    export default {
-        methods: {
-            onSubmit() {
-                if(this.label === "") {
-                    return;
-                }
-                this.$emit('todo-added', this.label);
-                this.label = "";
+  </template>
+  
+  <script>
+  export default {
+    methods: {
+      onSubmit() {
+        if (this.label === "") {
+          return;
         }
+        this.$emit('todo-added', this.label);
+        this.label = "";
+      }
     },
     data() {
-        return {
-            label: "",
-        };
+      return {
+        label: "",
+      };
     },
-};
-
-</script>
+  };
+  </script>
+  
+  <style scoped>
+  .label-wrapper {
+    margin-bottom: 1rem;
+  }
+  
+  .el-input {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .el-button {
+    width: 100%;
+    padding: 0.8rem;
+  }
+  </style>
+  

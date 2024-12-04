@@ -1,85 +1,97 @@
 <template>
     <form class="stack-small" @submit.prevent="onSubmit">
       <div>
-        <label class="edit-label">Edit Name for &quot;{{label}}&quot;</label>
-        <input
-            :id="id"
-            ref="labelInput"
-            type="text"
-            autocomplete="off"
-            v-model.lazy.trim="newLabel" />
+        <label class="edit-label">Edit Name for &quot;{{ label }}&quot;</label>
+        <el-input
+          v-model="newLabel"
+          :id="id"
+          ref="labelInput"
+          autocomplete="off"
+          clearable
+          class="custom-input"
+          size="medium"
+          placeholder="Enter new label" />
       </div>
       <div class="btn-group">
-        <button type="button" class="btn" @click="onCancel">
-          Cancel
-          <span class="visually-hidden">editing {{label}}</span>
-        </button>
-        <button type="submit" class="btn btn__primary">
-          Save
-          <span class="visually-hidden">edit for {{label}}</span>
-        </button>
+        <el-button type="text" @click="onCancel" class="btn-cancel">
+          Cancel---
+          <span class="visually-hidden">editing {{ label }}</span>
+        </el-button>
+        <el-button type="primary" @click="onSubmit" class="btn-save">
+          Save---
+          <span class="visually-hidden">edit for {{ label }}</span>
+        </el-button>
       </div>
     </form>
   </template>
-
-
+  
   <script>
-    export default {
-      props: {
-        label: {
-          type: String,
-          required: true,
-        },
-        id: {
-          type: String,
-          required: true,
-        },
+  export default {
+    props: {
+      label: {
+        type: String,
+        required: true,
       },
-      data() {
-        return {
-          newLabel: this.label,
-        };
+      id: {
+        type: String,
+        required: true,
       },
-      methods: {
-        onSubmit() {
-          if (this.newLabel && this.newLabel !== this.label) {
-            this.$emit("item-edited", this.newLabel);
-          }
-        },
-        onCancel() {
-          this.$emit("edit-cancelled");
-        },
+    },
+    data() {
+      return {
+        newLabel: this.label,
+      };
+    },
+    methods: {
+      onSubmit() {
+        if (this.newLabel && this.newLabel !== this.label) {
+          this.$emit("item-edited", this.newLabel);
+        }
       },
-      mounted() {
-        const labelInputRef = this.$refs.labelInput;
-        labelInputRef.focus();
-      }
-    };
+      onCancel() {
+        this.$emit("edit-cancelled");
+      },
+    },
+    mounted() {
+      const labelInputRef = this.$refs.labelInput;
+      labelInputRef.focus();
+    }
+  };
   </script>
+  
   <style scoped>
-    .edit-label {
-      font-family: Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      color: #0b0c0c;
-      display: block;
-      margin-bottom: 5px;
-    }
-    input {
-      display: inline-block;
-      margin-top: 0.4rem;
-      width: 100%;
-      min-height: 4.4rem;
-      padding: 0.4rem 0.8rem;
-      border: 2px solid #565656;
-    }
-    form {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-    form > * {
-      flex: 0 0 100%;
-    }
+  .edit-label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .custom-input {
+    width: 100%;
+    margin-top: 0.4rem;
+  }
+  
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .btn-cancel,
+  .btn-save {
+    font-weight: bold;
+  }
+  
+  .el-button {
+    border-radius: 6px;
+  }
+  
+  .el-input {
+    border-radius: 4px;
+    background-color: #f8f8f8;
+  }
   </style>
   
