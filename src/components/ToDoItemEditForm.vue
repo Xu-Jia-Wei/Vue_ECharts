@@ -1,26 +1,18 @@
 <template>
-    <form class="stack-small" @submit.prevent="onSubmit">
-      <div>
-        <label class="edit-label">Edit Name for &quot;{{ label }}&quot;</label>
-        <el-input
-          v-model="newLabel"
-          :id="id"
-          ref="labelInput"
-          autocomplete="off"
-          clearable
-          class="custom-input"
-          size="medium"
-          placeholder="Enter new label" />
-      </div>
+    <form class="edit-form" @submit.prevent="onSubmit">
+      <label class="edit-label">Edit Name for "{{ label }}"</label>
+      <input
+        v-model="newLabel"
+        :id="id"
+        ref="labelInput"
+        class="edit-input"
+        placeholder="Enter new label"
+        autocomplete="off"
+        clearable
+      />
       <div class="btn-group">
-        <el-button type="text" @click="onCancel" class="btn-cancel">
-          Cancel---
-          <span class="visually-hidden">editing {{ label }}</span>
-        </el-button>
-        <el-button type="primary" @click="onSubmit" class="btn-save">
-          Save---
-          <span class="visually-hidden">edit for {{ label }}</span>
-        </el-button>
+        <button @click="onCancel" class="btn cancel-btn">Cancel</button>
+        <button @click="onSubmit" class="btn save-btn">Save</button>
       </div>
     </form>
   </template>
@@ -53,45 +45,54 @@
       },
     },
     mounted() {
-      const labelInputRef = this.$refs.labelInput;
-      labelInputRef.focus();
-    }
+      this.$refs.labelInput.focus();
+    },
   };
   </script>
   
   <style scoped>
   .edit-label {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    display: block;
-    margin-bottom: 8px;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
   }
   
-  .custom-input {
+  .edit-input {
     width: 100%;
-    margin-top: 0.4rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
   }
   
   .btn-group {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 0.5rem;
   }
   
-  .btn-cancel,
-  .btn-save {
-    font-weight: bold;
-  }
-  
-  .el-button {
-    border-radius: 6px;
-  }
-  
-  .el-input {
+  .btn {
+    padding: 0.5rem 1rem;
+    border: none;
     border-radius: 4px;
-    background-color: #f8f8f8;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+  
+  .cancel-btn {
+    background-color: #dcdcdc;
+    color: black;
+  }
+  
+  .save-btn {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #b0b0b0;
+  }
+  
+  .save-btn:hover {
+    background-color: #218838;
   }
   </style>
   

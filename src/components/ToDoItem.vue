@@ -1,51 +1,33 @@
 <template>
-    <div class="stack-small" v-if="!isEditing">
-      <el-checkbox
+    <div class="todo-list">
+      <div v-if="!isEditing" class="todo-item">
+        <label class="todo-label">
+          <input type="checkbox" v-model="isDone" @change="$emit('checkbox-changed')" />
+          {{ label }}
+        </label>
+        <div class="btn-group">
+          <button @click="toggleToItemEditForm" class="btn edit-btn">Edit</button>
+          <button @click="deleteToDo" class="btn delete-btn">Delete</button>
+        </div>
+      </div>
+  
+      <to-do-item-edit-form
+        v-else
         :id="id"
         :label="label"
-        v-model="isDone"
-        @change="$emit('checkbox-changed')">
-        {{ label }}
-      </el-checkbox>
-  
-      <div class="btn-group">
-        <el-button
-          type="primary"
-          ref="editButton"
-          @click="toggleToItemEditForm"
-          size="small">
-          Edit---
-          <span class="visually-hidden">{{ label }}</span>
-        </el-button>
-  
-        <el-button
-          type="danger"
-          @click="deleteToDo"
-          size="small">
-          Delete---
-          <span class="visually-hidden">{{ label }}</span>
-        </el-button>
-      </div>
+        @item-edited="itemEdited"
+        @edit-cancelled="editCancelled"
+      ></to-do-item-edit-form>
     </div>
-  
-    <to-do-item-edit-form
-      v-else
-      :id="id"
-      :label="label"
-      @item-edited="itemEdited"
-      @edit-cancelled="editCancelled">
-    </to-do-item-edit-form>
   </template>
   
   <script>
-  import { ElCheckbox, ElButton } from 'element-plus';
   import ToDoItemEditForm from "./ToDoItemEditForm";
+
   
   export default {
     components: {
       ToDoItemEditForm,
-      ElCheckbox,
-      ElButton
     },
     props: {
       label: { required: true, type: String },
@@ -54,13 +36,13 @@
     },
     data() {
       return {
-        isEditing: false
+        isEditing: false,
       };
     },
     computed: {
       isDone() {
         return this.done;
-      }
+      },
     },
     methods: {
       deleteToDo() {
@@ -72,39 +54,72 @@
       itemEdited(newLabel) {
         this.$emit("item-edited", this.id, newLabel);
         this.isEditing = false;
-        this.focusOnEditButton();
       },
       editCancelled() {
         this.isEditing = false;
-        this.focusOnEditButton();
       },
-      focusOnEditButton() {
-        this.$nextTick(() => {
-          const editButtonRef = this.$refs.editButton;
-          if (editButtonRef) {
-            editButtonRef.$el.focus();
-          }
-        });
-      }
-    }
+    },
   };
   </script>
   
   <style scoped>
+  .todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .todo-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+  
   .btn-group {
     display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 0.5rem;
   }
   
-  .el-button {
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
+  .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
   }
   
-  .el-checkbox {
-    font-size: 1.2rem;
-    margin-bottom: 0.8rem;
+  .edit-btn {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #ff4d4f;
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c00000;
   }
   </style>
   
